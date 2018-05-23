@@ -17,13 +17,10 @@ install:
   - set PATH=%GOPATH%\bin;c:\go\bin;%PATH%
   - go version
   - go env
+  - dir c:\mingw-w64
+  - cd c:\gopath\src\github.com\matiasinsaurralde\appveyor-test\dotnet
 
-build_script:
-  - go build -o buildOutput\myapp -i .
+build: false
 
-build_script:
-  - ps: .\build.ps1
-
-artifacts:
-  - path: buildOutput/myapp
-    name: binary
+test_script:
+  - go test . -v
