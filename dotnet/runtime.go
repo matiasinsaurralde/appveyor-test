@@ -2,7 +2,9 @@ package dotnet
 
 /*
 #cgo CXXFLAGS: -std=c++11 -Wall
-#cgo LDFLAGS: -ldl
+#cgo windows CXXFLAGS: -DWIN32
+#cgo linux LDFLAGS: -ldl
+#cgo windows LDFLAGS: -ldl
 #include <stdlib.h>
 #include "runtime.hpp"
 */
