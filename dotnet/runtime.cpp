@@ -56,6 +56,7 @@ int initializeCoreCLR(const char* exePath,
   AddFilesFromDirectoryToTpaList(clrFilesAbsolutePath, tpaList);
 
   fprintf(stdout, "calling dlopen\n");
+  fprintf(stdout, "coreClrDllPath = %s\n", coreClrDllPath.c_str());
   coreclrLib = dlopen(coreClrDllPath.c_str(), RTLD_NOW | RTLD_LOCAL);
   if (coreclrLib == nullptr) {
       fprintf(stdout, "dlopen() is nullptr\n");
