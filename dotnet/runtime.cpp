@@ -22,6 +22,7 @@ int initializeCoreCLR(const char* exePath,
             const char* managedAssemblyAbsolutePath,
             const char* clrFilesAbsolutePath) {
 
+  fprintf(stdout, "initializeCoreCLR is called\n");
   std::string coreClrDllPath(clrFilesAbsolutePath);
   coreClrDllPath.append("/");
   coreClrDllPath.append(coreClrDll);
@@ -54,9 +55,12 @@ int initializeCoreCLR(const char* exePath,
   std::string tpaList;
   AddFilesFromDirectoryToTpaList(clrFilesAbsolutePath, tpaList);
 
+  fprintf(stdout, "calling dlopen\n");
   coreclrLib = dlopen(coreClrDllPath.c_str(), RTLD_NOW | RTLD_LOCAL);
-  if (coreclrLib != nullptr)
-  {
+  if (coreclrLib == nullptr) {
+      fprintf(stdout, "dlopen() is nullptr\n");
+  } else {
+      fprintf(stdout, "dlopen() is not nullptr\n");
       initialize_core_clr = (coreclr_initialize_ptr)dlsym(coreclrLib, "coreclr_initialize");
       execute_assembly = (coreclr_execute_assembly_ptr)dlsym(coreclrLib, "coreclr_execute_assembly");
       shutdown_core_clr= (coreclr_shutdown_ptr)dlsym(coreclrLib, "coreclr_shutdown");

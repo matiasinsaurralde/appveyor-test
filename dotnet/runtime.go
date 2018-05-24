@@ -2,7 +2,7 @@ package dotnet
 
 /*
 #cgo CXXFLAGS: -std=c++11 -Wall
-#cgo linux LDFLAGS: -ldl
+#cgo LDFLAGS: -ldl
 #include <stdlib.h>
 #include "runtime.hpp"
 */
@@ -10,6 +10,7 @@ import "C"
 
 import (
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -45,6 +46,10 @@ var (
 	darwinSDKPaths = []string{
 		"/usr/local/share/dotnet/shared/Microsoft.NETCore.App",
 		"$HOME/.dotnet/shared/Microsoft.NETCore.App",
+	}
+
+	windowsSDKPaths = []string{
+		"C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App",
 	}
 )
 
@@ -111,6 +116,7 @@ func Init() (err error) {
 
 	// clrCommonPaths holds possible SDK locations
 	clrCommonPaths := locateSDK()
+	fmt.Println("clrCommonPaths =", clrCommonPaths)
 
 	// Test for common SDK paths, return err if they don't exist
 	if runtimeInstance.Params.CLRFilesAbsolutePath == "" {
@@ -129,6 +135,8 @@ func Init() (err error) {
 	} else {
 		clrFilesAbsolutePath = runtimeInstance.Params.CLRFilesAbsolutePath
 	}
+
+	fmt.Println("clrFilesAbsolutePath =", clrFilesAbsolutePath)
 
 	clrFilesAbsolutePathC := C.CString(clrFilesAbsolutePath)
 
@@ -166,6 +174,8 @@ func locateSDK() (sdkDirectories []string) {
 		break
 	case "linux":
 		basePaths = linuxSDKPaths
+	case "windows":
+		basePaths = windowsSDKPaths
 	}
 	// Replace HOME env var from base paths:
 	homeEnv := os.Getenv("HOME")
