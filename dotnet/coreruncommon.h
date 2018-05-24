@@ -53,3 +53,7 @@ static const char * const coreClrDll = "libcoreclr.dylib";
 #else
 static const char * const coreClrDll = "libcoreclr.so";
 #endif
+
+#if defined(WIN32)
+static const char * const coreClrDll = "coreclr.dll";
+#endif
